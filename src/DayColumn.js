@@ -38,15 +38,11 @@ class DayColumn extends React.Component {
     this.clearTimeIndicatorInterval()
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.selectable && !this.props.selectable) this._selectable()
-    if (!nextProps.selectable && this.props.selectable)
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.selectable && !prevProps.selectable) this._selectable()
+    if (!this.props.selectable && prevProps.selectable)
       this._teardownSelectable()
 
-    this.slotMetrics = this.slotMetrics.update(nextProps)
-  }
-
-  componentDidUpdate(prevProps, prevState) {
     const { getNow, isNow, localizer, date, min, max } = this.props
     const getNowChanged = localizer.neq(prevProps.getNow(), getNow(), 'minutes')
 
@@ -117,6 +113,8 @@ class DayColumn extends React.Component {
       components: { eventContainerWrapper: EventContainer, ...components },
     } = this.props
 
+    this.slotMetrics = this.slotMetrics.update(this.props)
+
     let { slotMetrics } = this
     let { selecting, top, height, startDate, endDate } = this.state
 
@@ -141,6 +139,7 @@ class DayColumn extends React.Component {
           selecting && 'rbc-slot-selecting'
         )}
         slotMetrics={slotMetrics}
+        resource={resource}
       >
         {slotMetrics.groups.map((grp, idx) => (
           <TimeSlotGroup
@@ -238,8 +237,20 @@ class DayColumn extends React.Component {
           continuesPrior={continuesPrior}
           continuesAfter={continuesAfter}
           accessors={accessors}
+          resource={this.props.resource}
           selected={isSelected(event, selected)}
-          onClick={(e) => this._select(event, e)}
+          onClick={(e) =>
+            this._select(
+              {
+                ...event,
+                ...(this.props.resource && {
+                  sourceResource: this.props.resource,
+                }),
+                ...(isBackgroundEvent && { isBackgroundEvent: true }),
+              },
+              e
+            )
+          }
           onDoubleClick={(e) => this._doubleClick(event, e)}
           isBackgroundEvent={isBackgroundEvent}
           onKeyPress={(e) => this._keyPress(event, e)}
