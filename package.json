@@ -1,6 +1,6 @@
 {
-  "name": "react-big-calendar",
-  "version": "1.13.1",
+  "name": "react-big-calendar-luxon-tz",
+  "version": "1.13.2",
   "description": "Calendar! with events",
   "author": {
     "name": "Jason Quense",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jquense/react-big-calendar.git"
+    "url": "git@github.com:Sveagruva/react-big-calendar.git"
   },
   "publishConfig": {
     "access": "public",
