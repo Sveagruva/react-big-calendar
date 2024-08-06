@@ -1,5 +1,7 @@
 # react-big-calendar
 
+`npm i react-big-calendar-luxon-tz`
+
 An events calendar component built for React and designed for modern browsers (read: not IE) and uses flexbox over the classic tables-caption approach.
 
 <p align="center">
